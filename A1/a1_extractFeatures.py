@@ -25,7 +25,7 @@ BGL.dropna(inplace=True, subset=["WORD"])
 BGL.fillna(0)
 War = pd.read_csv('/u/cs401/Wordlists/Ratings_Warriner_et_al.csv')
 War.dropna(1, inplace=True, how="all")
-War.dropna(inplace=True, subset=["WORD"])
+War.dropna(inplace=True, subset=["Word"])
 War.fillna(0)
 
 def extract1(comment):
@@ -69,7 +69,7 @@ def extract1(comment):
     feats[20] = BGL_words.iloc[:, 3].std()
     feats[21] = BGL_words.iloc[:, 4].std()
     feats[22] = BGL_words.iloc[:, 5].std()
-    War_words = War[War["WORD"].str.match("|".join(tokens))]
+    War_words = War[War["Word"].str.match("|".join(tokens))]
     feats[23] = War_words.iloc[:, 2].mean()
     feats[24] = War_words.iloc[:, 5].mean()
     feats[25] = War_words.iloc[:, 8].mean()
