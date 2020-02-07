@@ -40,28 +40,30 @@ def extract1(comment):
     '''
 
     feats = np.zeros(29, dtype=float)
+
     feats[0] = len(re.findall(r"\b[A-Z][A-Z][A-Z]+/", comment))
     comment = comment.lower()
+    reg = re.compile(comment)
     for i in FIRST_PERSON_PRONOUNS:
-        feats[1] += len(re.findall(r'\b' + i + '/', comment))
+        feats[1] += len(reg.findall(r'\b' + i + '/'))
     for i in SECOND_PERSON_PRONOUNS:
-        feats[2] += len(re.findall(r'\b' + i + '/', comment))
+        feats[2] += len(reg.findall(r'\b' + i + '/'))
     for i in THIRD_PERSON_PRONOUNS:
-        feats[3] += len(re.findall(r'\b' + i + '/', comment))
-    feats[4] = len(re.findall(r'/cc\b', comment))
-    feats[5] = len(re.findall(r'/vbd\b', comment))
-    feats[6] = len(re.findall(r"'ll/|\bwill/|\bgonna/|\bgo/vbg to/to [a-z]+/vb", comment))
-    feats[7] = len(re.findall(r',/,', comment))
-    feats[8] = len(re.findall(r'/nfp\b', comment))
-    feats[9] = len(re.findall(r'/nns?\b', comment))
-    feats[10] = len(re.findall(r'/nnps?\b', comment))
-    feats[11] = len(re.findall(r'/rb|/rbr|/rbs', comment))
-    feats[12] = len(re.findall('/wdt|/wp|/wp\$|/wrb', comment))
+        feats[3] += len(reg.findall(r'\b' + i + '/'))
+    feats[4] = len(reg.findall(r'/cc\b'))
+    feats[5] = len(reg.findall(r'/vbd\b'))
+    feats[6] = len(reg.findall(r"'ll/|\bwill/|\bgonna/|\bgo/vbg to/to [a-z]+/vb"))
+    feats[7] = len(reg.findall(r',/,'))
+    feats[8] = len(reg.findall(r'/nfp\b'))
+    feats[9] = len(reg.findall(r'/nns?\b'))
+    feats[10] = len(reg.findall(r'/nnps?\b'))
+    feats[11] = len(reg.findall(r'/rb|/rbr|/rbs'))
+    feats[12] = len(reg.findall('/wdt|/wp|/wp\$|/wrb'))
     for i in SLANG:
-        feats[13] += len(re.findall(r'\b' + i + '/', comment))
-    tokens = re.findall(r'\b[a-z]+/', comment)
+        feats[13] += len(re.findall(r'\b' + i + '/'))
+    tokens = reg.findall(r'\b[a-z]+/')
     tokens = [x[:-1] for x in tokens]
-    feats[16] = len(re.findall(r'\n', comment))
+    feats[16] = len(reg.findall(r'\n'))
     feats[14] = len(comment.split())/feats[16]
     if len(tokens) != 0:
         feats[15] = len("".join(tokens))/len(tokens)
