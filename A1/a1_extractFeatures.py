@@ -121,7 +121,7 @@ def main(args):
         feats[i, :29] = extract1(sent['body'])
         feats[i, :] = extract2(feats[i, :], sent['cat'], sent['id'])
         i += 1
-    feats.fillna(0, inplace=True)
+    feats = np.nan_to_num(feats)
     np.savez_compressed(args.output, feats)
 
     
