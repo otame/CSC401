@@ -54,6 +54,7 @@ def main(args):
             print( "Processing " + fullFile)
 
             data = json.load(open(fullFile))
+            data = data[:1]
             print(data)
             data = data[:args.max]
 
