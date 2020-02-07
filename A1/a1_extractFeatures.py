@@ -55,16 +55,17 @@ def extract1(comment):
     feats[9] = len(re.findall(r'/nns?\b', comment))
     feats[10] = len(re.findall(r'/nnps?\b', comment))
     feats[11] = len(re.findall(r'/rb|/rbr|/rbs', comment))
-    feats[12] = len(re.findall('/wwdt|/wp|/wp\$|/wrb', comment))
+    feats[12] = len(re.findall('/wdt|/wp|/wp\$|/wrb', comment))
     for i in SLANG:
         feats[13] += len(re.findall(r'\b' + i + '/', comment))
-    feats[14] = len(comment)
     tokens = re.findall(r'\b[a-z]+/', comment)
     tokens = [x[:-1] for x in tokens]
+    feats[14] = len(tokens)
     feats[16] = len(re.findall(r'\n', comment))
     if len(tokens) != 0:
         feats[15] = len("".join(tokens))/len(tokens)
         BGL_words = BGL[BGL["WORD"].str.match("|".join(tokens))]
+        print(BGL_words)
         feats[17] = BGL_words.iloc[:, 3].mean()
         feats[18] = BGL_words.iloc[:, 4].mean()
         feats[19] = BGL_words.iloc[:, 5].mean()
