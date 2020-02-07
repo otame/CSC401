@@ -99,7 +99,14 @@ def extract2(feats, comment_class, comment_id):
     ids = f.readlines()
     ids = [i.strip() for i in ids]
     feats[29:173] = liwc[ids.index(comment_id)]
-    feats[173] = comment_class
+    if comment_class == "Left":
+        feats[173] = 0
+    elif comment_class == "Center":
+        feats[173] = 1
+    elif comment_class == "Right":
+        feats[173] = 2
+    elif comment_class == "Alt":
+        feats[173] = 3
 
     return feats
 
