@@ -49,8 +49,8 @@ def extract1(comment):
         feats[3] += len(re.findall(r'\b' + i + '/', comment))
     feats[4] = len(re.findall(r'/cc\b', comment))
     feats[5] = len(re.findall(r'/vbd\b', comment))
-    feats[6] = len(re.findall(r"'ll/|\bwill/|\bgonna/|\bgoing/VBG to/TO [a-z]+/VB", comment))
-    feats[7] = len(re.findall(r'\b,/,\b', comment))
+    feats[6] = len(re.findall(r"'ll/|\bwill/|\bgonna/|\bgo/vbg to/to [a-z]+/vb", comment))
+    feats[7] = len(re.findall(r',/,', comment))
     feats[8] = len(re.findall(r'/nfp\b', comment))
     feats[9] = len(re.findall(r'/nns?\b', comment))
     feats[10] = len(re.findall(r'/nnps?\b', comment))
@@ -61,7 +61,7 @@ def extract1(comment):
     tokens = re.findall(r'\b[a-z]+/', comment)
     tokens = [x[:-1] for x in tokens]
     feats[16] = len(re.findall(r'\n', comment))
-    feats[14] = len(tokens)/feats[16]
+    feats[14] = len(comment.split())/feats[16]
     if len(tokens) != 0:
         feats[15] = len("".join(tokens))/len(tokens)
         BGL_words = BGL[BGL["WORD"].str.match(r'\b' + r"\b|\b".join(tokens) + r'\b')]
