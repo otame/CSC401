@@ -43,12 +43,9 @@ def extract1(comment):
     feats = np.zeros(29, dtype=float)
     feats[0] = len(re.findall(r"\b[A-Z][A-Z][A-Z]+/", comment))
     comment = comment.lower()
-    for i in FIRST_PERSON_PRONOUNS:
-        feats[1] += len(re.findall(r'\b' + i + '/', comment))
-    for i in SECOND_PERSON_PRONOUNS:
-        feats[2] += len(re.findall(r'\b' + i + '/', comment))
-    for i in THIRD_PERSON_PRONOUNS:
-        feats[3] += len(re.findall(r'\b' + i + '/', comment))
+    feats[1] = len(re.findall(r'\b' + r'/|\b'.join(FIRST_PERSON_PRONOUNS) + '/', comment))
+    feats[2] = len(re.findall(r'\b' + r'/|\b'.join(SECOND_PERSON_PRONOUNS) + '/', comment))
+    feats[3] = len(re.findall(r'\b' + r'/|\b'.join(THIRD_PERSON_PRONOUNS) + '/', comment))
     feats[4] = len(re.findall(r'/cc\b', comment))
     feats[5] = len(re.findall(r'/vbd\b', comment))
     feats[6] = len(re.findall(r"'ll/|\bwill/|\bgonna/|\bgo/vbg to/to [a-z]+/vb", comment))
@@ -58,8 +55,7 @@ def extract1(comment):
     feats[10] = len(re.findall(r'/nnps?\b', comment))
     feats[11] = len(re.findall(r'/rb|/rbr|/rbs', comment))
     feats[12] = len(re.findall('/wdt|/wp|/wp\$|/wrb', comment))
-    for i in SLANG:
-        feats[13] += len(re.findall(r'\b' + i + '/', comment))
+    feats[13] = len(re.findall(r'\b' + r'/|\b'.join(SLANG) + '/', comment))
     tokens = re.findall(r'\b[a-z]+/', comment)
     tokens = [x[:-1] for x in tokens]
     feats[16] = len(re.findall(r'\n', comment))
