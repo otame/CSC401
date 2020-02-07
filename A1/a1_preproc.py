@@ -33,12 +33,20 @@ def preproc1(comment , steps=range(1, 5)):
         modComm = " ".join(modComm.split())
 
     utt = nlp(modComm)
-
+    total = ""
     for sent in utt.sents:
         print(sent.text)
+        new_sent = []
         for token in sent:
+            if token.lemma_[0] != "-" or token.text[0] == "-":
+                new_sent.append(token.lemma_ + "/" + token.pos_)
+            else:
+                new_sent.append(token.text + "/" + token.pos_)
             print(token.text, token.lemma_, token.pos_, token.tag_, token.dep_,
             token.shape_, token.is_alpha, token.is_stop)
+        total += " ".join(new_sent) + '\n'
+    modComm = total
+
     
     # TODO: use Spacy document for modComm to create a string.
     # Make sure to:
