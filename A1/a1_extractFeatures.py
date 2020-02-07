@@ -72,6 +72,7 @@ def extract1(comment):
         feats[21] = BGL_words.iloc[:, 4].std()
         feats[22] = BGL_words.iloc[:, 5].std()
         War_words = War[War["Word"].str.match(r'\b' + r"\b|\b".join(tokens) + r'\b')]
+        print(War_words)
         feats[23] = War_words.iloc[:, 2].mean()
         feats[24] = War_words.iloc[:, 5].mean()
         feats[25] = War_words.iloc[:, 8].mean()
