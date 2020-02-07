@@ -60,24 +60,23 @@ def extract1(comment):
     feats[14] = len(comment)
     tokens = re.findall(r'\b[A-Za-z]+/', comment)
     tokens = [x[:-1].lower() for x in tokens]
-    if len(tokens) == 0:
-        print(comment)
-    feats[15] = len("".join(tokens))/len(tokens)
-    feats[16] = 1
-    BGL_words = BGL[BGL["WORD"].str.match("|".join(tokens))]
-    feats[17] = BGL_words.iloc[:, 3].mean()
-    feats[18] = BGL_words.iloc[:, 4].mean()
-    feats[19] = BGL_words.iloc[:, 5].mean()
-    feats[20] = BGL_words.iloc[:, 3].std()
-    feats[21] = BGL_words.iloc[:, 4].std()
-    feats[22] = BGL_words.iloc[:, 5].std()
-    War_words = War[War["Word"].str.match("|".join(tokens))]
-    feats[23] = War_words.iloc[:, 2].mean()
-    feats[24] = War_words.iloc[:, 5].mean()
-    feats[25] = War_words.iloc[:, 8].mean()
-    feats[26] = War_words.iloc[:, 2].std()
-    feats[27] = War_words.iloc[:, 5].std()
-    feats[28] = War_words.iloc[:, 8].std()
+    feats[16] = len(re.findall(r'\n', comment))
+    if len(tokens) != 0:
+        feats[15] = len("".join(tokens))/len(tokens)
+        BGL_words = BGL[BGL["WORD"].str.match("|".join(tokens))]
+        feats[17] = BGL_words.iloc[:, 3].mean()
+        feats[18] = BGL_words.iloc[:, 4].mean()
+        feats[19] = BGL_words.iloc[:, 5].mean()
+        feats[20] = BGL_words.iloc[:, 3].std()
+        feats[21] = BGL_words.iloc[:, 4].std()
+        feats[22] = BGL_words.iloc[:, 5].std()
+        War_words = War[War["Word"].str.match("|".join(tokens))]
+        feats[23] = War_words.iloc[:, 2].mean()
+        feats[24] = War_words.iloc[:, 5].mean()
+        feats[25] = War_words.iloc[:, 8].mean()
+        feats[26] = War_words.iloc[:, 2].std()
+        feats[27] = War_words.iloc[:, 5].std()
+        feats[28] = War_words.iloc[:, 8].std()
     return feats
     
     
