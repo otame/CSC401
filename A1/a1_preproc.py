@@ -54,11 +54,15 @@ def main(args):
             print( "Processing " + fullFile)
 
             data = json.load(open(fullFile))
+            if (args.ID[0] > len(data)):
+                print("Error: ID too big or data to small to index from there.")
+                sys.exit(1)
+
             if args.ID[0] + args.max >= len(data):
-                data = data[args.ID[0]:(len(data)-1)].extend(data[:(args.ID[0]+args.max-len(data))])
+                data = data[args.ID[0]:(len(data))].extend(data[:(args.ID[0]+args.max-len(data))])
             else:
+                print(args.ID[0], (args.ID[0]+args.max))
                 data = data[args.ID[0]:(args.ID[0]+args.max)]
-            print(data)
             data = [json.loads(line) for line in data]
             print(data)
 
