@@ -60,8 +60,10 @@ def main(args):
                 data = data[start:(len(data))].extend(data[:(start+args.max-len(data))])
             else:
                 data = data[start:(start+args.max)]
+            pre = data
             data = [json.loads(line) for line in data]
-            print(data)
+            post = data
+            print(data, pre==post)
 
 
             # TODO: read those lines with something like `j = json.loads(line)`
