@@ -4,6 +4,7 @@ import os
 import json
 import re
 import spacy
+import html
 
 
 nlp = spacy.load('en_core_web_sm', disable=['parser', 'ner'])
@@ -25,13 +26,16 @@ def preproc1(comment , steps=range(1, 5)):
     if 1 in steps:  # replace newlines with spaces
         modComm = re.sub(r"\n{1,}", " ", modComm)
     if 2 in steps:  # unescape html
-        print("TODO")
+        modComm = html.unescape(modComm)
     if 3 in steps:  # remove URLs
         modComm = re.sub(r"(http|www)\S+", "", modComm)
     if 4 in steps:  # remove duplicate spaces
-        print('TODO')
+        modComm = " ".join(modComm.split())
 
-    # TODO: get Spacy document for modComm
+    utt = nlp(modComm)
+
+    for sent in utt.sents:
+        print(sent.text)
     
     # TODO: use Spacy document for modComm to create a string.
     # Make sure to:
