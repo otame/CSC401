@@ -36,6 +36,9 @@ def preproc1(comment , steps=range(1, 5)):
 
     for sent in utt.sents:
         print(sent.text)
+        for token in sent:
+            print(token.text, token.lemma_, token.pos_, token.tag_, token.dep_,
+            token.shape_, token.is_alpha, token.is_stop)
     
     # TODO: use Spacy document for modComm to create a string.
     # Make sure to:
