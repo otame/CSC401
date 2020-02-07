@@ -43,7 +43,7 @@ def extract1(comment):
 
     feats[0] = len(re.findall(r"\b[A-Z][A-Z][A-Z]+/", comment))
     comment = comment.lower()
-    reg = re.compile(comment, re.I)
+    reg = re.compile(comment, re.A)
     for i in FIRST_PERSON_PRONOUNS:
         feats[1] += len(reg.findall(r'\b' + i + '/'))
     for i in SECOND_PERSON_PRONOUNS:
