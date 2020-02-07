@@ -58,6 +58,7 @@ def main(args):
                 data = data[args.ID[0]:(len(data)-1)].extend(data[:(args.ID[0]+args.max-len(data))])
             else:
                 data = data[args.ID[0]:(args.ID[0]+args.max)]
+            print(data)
             data = [json.loads(line) for line in data]
             print(data)
 
