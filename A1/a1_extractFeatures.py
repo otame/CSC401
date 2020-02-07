@@ -60,22 +60,22 @@ def extract1(comment):
     tokens = [x[:-1] for x in tokens]
     feats[16] = len(re.findall(r'\n', comment))
     feats[14] = len(comment.split())/feats[16]
-    # if len(tokens) != 0:
-    #     feats[15] = len("".join(tokens))/len(tokens)
-    #     BGL_words = BGL[BGL["WORD"].str.match(r'^' + r"$|^".join(tokens) + r'$')]
-    #     feats[17] = BGL_words["AoA (100-700)"].mean()
-    #     feats[18] = BGL_words["IMG"].mean()
-    #     feats[19] = BGL_words["FAM"].mean()
-    #     feats[20] = BGL_words["AoA (100-700)"].std()
-    #     feats[21] = BGL_words["IMG"].std()
-    #     feats[22] = BGL_words["FAM"].std()
-    #     War_words = War[War["Word"].str.match(r'^' + r"$|^".join(tokens) + r'$')]
-    #     feats[23] = War_words['V.Mean.Sum'].mean()
-    #     feats[24] = War_words['A.Mean.Sum'].mean()
-    #     feats[25] = War_words['D.Mean.Sum'].mean()
-    #     feats[26] = War_words['V.Mean.Sum'].std()
-    #     feats[27] = War_words['A.Mean.Sum'].std()
-    #     feats[28] = War_words['D.Mean.Sum'].std()
+    if len(tokens) != 0:
+        feats[15] = len("".join(tokens))/len(tokens)
+        BGL_words = BGL[BGL["WORD"].str.match(r'^' + r"$|^".join(tokens) + r'$')]
+        feats[17] = BGL_words["AoA (100-700)"].mean()
+        feats[18] = BGL_words["IMG"].mean()
+        feats[19] = BGL_words["FAM"].mean()
+        feats[20] = BGL_words["AoA (100-700)"].std()
+        feats[21] = BGL_words["IMG"].std()
+        feats[22] = BGL_words["FAM"].std()
+        War_words = War[War["Word"].str.match(r'^' + r"$|^".join(tokens) + r'$')]
+        feats[23] = War_words['V.Mean.Sum'].mean()
+        feats[24] = War_words['A.Mean.Sum'].mean()
+        feats[25] = War_words['D.Mean.Sum'].mean()
+        feats[26] = War_words['V.Mean.Sum'].std()
+        feats[27] = War_words['A.Mean.Sum'].std()
+        feats[28] = War_words['D.Mean.Sum'].std()
     return feats
     
     
