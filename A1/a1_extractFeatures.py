@@ -22,11 +22,11 @@ SLANG = {
 BGL = pd.read_csv('/u/cs401/Wordlists/BristolNorms+GilhoolyLogie.csv')
 BGL.dropna(1, inplace=True, how="all")
 BGL.dropna(inplace=True, subset=["WORD"])
-BGL.fillna(0)
+BGL.fillna(0, inplace=True)
 War = pd.read_csv('/u/cs401/Wordlists/Ratings_Warriner_et_al.csv')
 War.dropna(1, inplace=True, how="all")
 War.dropna(inplace=True, subset=["Word"])
-War.fillna(0)
+War.fillna(0, inplace=True)
 
 def extract1(comment):
     ''' This function extracts features from a single comment
@@ -65,7 +65,8 @@ def extract1(comment):
     if len(tokens) != 0:
         feats[15] = len("".join(tokens))/len(tokens)
         BGL_words = BGL[BGL["WORD"].str.match("|".join(tokens))]
-        print(BGL_words)
+        print(tokens)
+        print("|".join(tokens))
         feats[17] = BGL_words.iloc[:, 3].mean()
         feats[18] = BGL_words.iloc[:, 4].mean()
         feats[19] = BGL_words.iloc[:, 5].mean()
