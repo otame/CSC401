@@ -60,7 +60,7 @@ def extract1(comment):
     feats[11] = len(reg.findall(r'/rb|/rbr|/rbs'))
     feats[12] = len(reg.findall('/wdt|/wp|/wp\$|/wrb'))
     for i in SLANG:
-        feats[13] += len(re.findall(r'\b' + i + '/'))
+        feats[13] += len(reg.findall(r'\b' + i + '/'))
     tokens = reg.findall(r'\b[a-z]+/')
     tokens = [x[:-1] for x in tokens]
     feats[16] = len(reg.findall(r'\n'))
