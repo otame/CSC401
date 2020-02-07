@@ -98,7 +98,7 @@ def extract2(feats, comment_class, comment_id):
     liwc = np.load("/u/cs401/A1/feats/" + comment_class + "_feats.dat.npy")
     ids = f.readlines()
     ids = [i.strip() for i in ids]
-    feats[29:172] = liwc[ids.index(comment_id)]
+    feats[29:173] = liwc[ids.index(comment_id)]
     feats[173] = comment_class
 
     return feats
