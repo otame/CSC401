@@ -1,6 +1,8 @@
 import numpy as np
 import argparse
 import json
+import re
+import pandas as pd
 
 # Provided wordlists.
 FIRST_PERSON_PRONOUNS = {
@@ -17,6 +19,14 @@ SLANG = {
     'afn', 'bbs', 'cya', 'ez', 'f2f', 'gtr', 'ic', 'jk', 'k', 'ly', 'ya',
     'nm', 'np', 'plz', 'ru', 'so', 'tc', 'tmi', 'ym', 'ur', 'u', 'sol', 'fml'}
 
+BGL = pd.read_csv('/u/cs401/Wordlists/BristolNorms+GilhoolyLogie.csv')
+BGL.dropna(1, inplace=True, how="all")
+BGL.dropna(inplace=True, subset=["WORD"])
+BGL.fillna(0)
+War = pd.read_csv('/u/cs401/Wordlists/Ratings_Warriner_et_al.csv')
+War.dropna(1, inplace=True, how="all")
+War.dropna(inplace=True, subset=["WORD"])
+War.fillna(0)
 
 def extract1(comment):
     ''' This function extracts features from a single comment
@@ -26,11 +36,47 @@ def extract1(comment):
 
     Returns:
         feats : numpy Array, a 173-length vector of floating point features (only the first 29 are expected to be filled, here)
-    '''    
-    # TODO: Extract features that rely on capitalization.
-    # TODO: Lowercase the text in comment. Be careful not to lowercase the tags. (e.g. "Dog/NN" -> "dog/NN").
-    # TODO: Extract features that do not rely on capitalization.
-    print('TODO')
+    '''
+
+    feats = np.empty(173, dtype=float)
+    feats[0] = len(re.findall(r"\b[A-Z][A-Z][A-Z]+/", comment))
+    for i in FIRST_PERSON_PRONOUNS:
+        feats[1] += len(re.findall(r'\b' + i + '/', comment))
+    for i in SECOND_PERSON_PRONOUNS:
+        feats[2] += len(re.findall(r'\b' + i + '/', comment))
+    for i in THIRD_PERSON_PRONOUNS:
+        feats[3] += len(re.findall(r'\b' + i + '/', comment))
+    feats[4] = len(re.findall(r'/CC\b', comment))
+    feats[5] = len(re.findall(r'/VBD\b', comment))
+    feats[6] = len(re.findall(r"'ll/|\bwill/|\bgonna/|\bgoing/VBG to/TO [a-z]+/VB", comment))
+    feats[7] = len(re.findall(r'\b,/,\b', comment))
+    feats[8] = len(re.findall(r'/NFP\b', comment))
+    feats[9] = len(re.findall(r'/NNS?\b', comment))
+    feats[10] = len(re.findall(r'/NNPS?\b', comment))
+    feats[11] = len(re.findall(r'/RB|/RBR|/RBS', comment))
+    feats[12] = len(re.findall('/WWDT|/WP|/WP\$|/WRB', comment))
+    for i in SLANG:
+        feats[13] += len(re.findall(r'\b' + i + '/', comment))
+    feats[14] = len(comment)
+    tokens = re.findall(r'\b[A-Za-z]/', comment)
+    tokens = [x[:-1].lower() for x in tokens]
+    feats[15] = len("".join(tokens))/len(tokens)
+    feats[16] = 1
+    BGL_words = BGL[BGL["WORD"].str.match("|".join(tokens))]
+    feats[17] = BGL_words.iloc[:, 3].mean()
+    feats[18] = BGL_words.iloc[:, 4].mean()
+    feats[19] = BGL_words.iloc[:, 5].mean()
+    feats[20] = BGL_words.iloc[:, 3].std()
+    feats[21] = BGL_words.iloc[:, 4].std()
+    feats[22] = BGL_words.iloc[:, 5].std()
+    War_words = War[War["WORD"].str.match("|".join(tokens))]
+    feats[23] = War_words.iloc[:, 2].mean()
+    feats[24] = War_words.iloc[:, 5].mean()
+    feats[25] = War_words.iloc[:, 8].mean()
+    feats[26] = War_words.iloc[:, 2].std()
+    feats[27] = War_words.iloc[:, 5].std()
+    feats[28] = War_words.iloc[:, 8].std()
+    return feats
     
     
 def extract2(feats, comment_class, comment_id):
