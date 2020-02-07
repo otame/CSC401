@@ -63,7 +63,9 @@ def main(args):
             for line in data:
                 j = json.loads(line)
                 j = {"body": j["body"], "cat": file}
-                print(j)
+                j['body'] = preproc1(j['body'])
+                allOutput.append(j)
+    print(allOutput)
 
 
 
