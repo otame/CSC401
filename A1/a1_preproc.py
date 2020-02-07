@@ -54,8 +54,9 @@ def main(args):
             print( "Processing " + fullFile)
 
             data = json.load(open(fullFile))
+            print(data)
             data = data[:args.max]
-            data = preproc1(data)
+
 
             # TODO: select appropriate args.max lines
             # TODO: read those lines with something like `j = json.loads(line)`
