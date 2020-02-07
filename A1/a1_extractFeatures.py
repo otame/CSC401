@@ -60,6 +60,8 @@ def extract1(comment):
     feats[14] = len(comment)
     tokens = re.findall(r'\b[A-Za-z]+/', comment)
     tokens = [x[:-1].lower() for x in tokens]
+    if len(tokens) == 0:
+        print(comment)
     feats[15] = len("".join(tokens))/len(tokens)
     feats[16] = 1
     BGL_words = BGL[BGL["WORD"].str.match("|".join(tokens))]
