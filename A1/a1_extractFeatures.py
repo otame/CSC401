@@ -60,12 +60,11 @@ def extract1(comment):
         feats[13] += len(re.findall(r'\b' + i + '/', comment))
     tokens = re.findall(r'\b[a-z]+/', comment)
     tokens = [x[:-1] for x in tokens]
-    feats[14] = len(tokens)
     feats[16] = len(re.findall(r'\n', comment))
+    feats[14] = len(tokens)/feats[16]
     if len(tokens) != 0:
         feats[15] = len("".join(tokens))/len(tokens)
         BGL_words = BGL[BGL["WORD"].str.match(r'\b' + r"\b|\b".join(tokens) + r'\b')]
-        print(BGL_words)
         feats[17] = BGL_words.iloc[:, 3].mean()
         feats[18] = BGL_words.iloc[:, 4].mean()
         feats[19] = BGL_words.iloc[:, 5].mean()
@@ -122,7 +121,7 @@ def main(args):
         feats[i, :29] = extract1(sent['body'])
         feats[i, :] = extract2(feats[i, :], sent['cat'], sent['id'])
         i += 1
-
+    feats.fillna(0, inplace=True)
     np.savez_compressed(args.output, feats)
 
     
