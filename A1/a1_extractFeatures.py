@@ -92,8 +92,16 @@ def extract2(feats, comment_class, comment_id):
         feats : numpy Array, a 173-length vector of floating point features (this 
         function adds feature 30-173). This should be a modified version of 
         the parameter feats.
-    '''    
-    print('TODO')
+    '''
+
+    f = open("/u/cs401/A1/feats/" + comment_class + "_IDs.txt")
+    liwc = np.load("/u/cs401/A1/feats/" + comment_class + "_feats.dat.npy")
+    ids = f.readlines()
+    ids = [i.strip() for i in ids]
+    feats[29:172] = liwc[ids.index(comment_id)]
+    feats[173] = comment_class
+
+    return feats
 
 
 def main(args):
@@ -103,14 +111,8 @@ def main(args):
     i = 0
     for sent in data:
         feats[i, :29] = extract1(sent['body'])
-
-    # TODO: Use extract1 to find the first 29 features for each 
-    # data point. Add these to feats.
-
-    # TODO: Use extract2 to copy LIWC features (features 30-173)
-    # into feats. (Note that these rely on each data point's class,
-    # which is why we can't add them in extract1).
-    print('TODO')
+        feats[i, :] = extract2(feats[i, :], sent['cat'], sent['id'])
+        i += 1
 
     np.savez_compressed(args.output, feats)
 
