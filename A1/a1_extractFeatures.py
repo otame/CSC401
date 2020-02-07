@@ -38,7 +38,7 @@ def extract1(comment):
         feats : numpy Array, a 173-length vector of floating point features (only the first 29 are expected to be filled, here)
     '''
 
-    feats = np.empty(29, dtype=float)
+    feats = np.zeros(29, dtype=float)
     feats[0] = len(re.findall(r"\b[A-Z][A-Z][A-Z]+/", comment))
     comment = comment.lower()
     for i in FIRST_PERSON_PRONOUNS:
@@ -47,19 +47,19 @@ def extract1(comment):
         feats[2] += len(re.findall(r'\b' + i + '/', comment))
     for i in THIRD_PERSON_PRONOUNS:
         feats[3] += len(re.findall(r'\b' + i + '/', comment))
-    feats[4] = len(re.findall(r'/CC\b', comment))
-    feats[5] = len(re.findall(r'/VBD\b', comment))
+    feats[4] = len(re.findall(r'/cc\b', comment))
+    feats[5] = len(re.findall(r'/vbd\b', comment))
     feats[6] = len(re.findall(r"'ll/|\bwill/|\bgonna/|\bgoing/VBG to/TO [a-z]+/VB", comment))
     feats[7] = len(re.findall(r'\b,/,\b', comment))
-    feats[8] = len(re.findall(r'/NFP\b', comment))
-    feats[9] = len(re.findall(r'/NNS?\b', comment))
-    feats[10] = len(re.findall(r'/NNPS?\b', comment))
-    feats[11] = len(re.findall(r'/RB|/RBR|/RBS', comment))
-    feats[12] = len(re.findall('/WWDT|/WP|/WP\$|/WRB', comment))
+    feats[8] = len(re.findall(r'/nfp\b', comment))
+    feats[9] = len(re.findall(r'/nns?\b', comment))
+    feats[10] = len(re.findall(r'/nnps?\b', comment))
+    feats[11] = len(re.findall(r'/rb|/rbr|/rbs', comment))
+    feats[12] = len(re.findall('/wwdt|/wp|/wp\$|/wrb', comment))
     for i in SLANG:
         feats[13] += len(re.findall(r'\b' + i + '/', comment))
     feats[14] = len(comment)
-    tokens = re.findall(r'\b[A-Za-z]+/', comment)
+    tokens = re.findall(r'\b[a-z]+/', comment)
     tokens = [x[:-1] for x in tokens]
     feats[16] = len(re.findall(r'\n', comment))
     if len(tokens) != 0:
