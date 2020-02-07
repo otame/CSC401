@@ -3,6 +3,7 @@ import argparse
 import json
 import re
 import pandas as pd
+from tqdm import tqdm
 
 # Provided wordlists.
 FIRST_PERSON_PRONOUNS = {
@@ -72,7 +73,6 @@ def extract1(comment):
         feats[21] = BGL_words.iloc[:, 4].std()
         feats[22] = BGL_words.iloc[:, 5].std()
         War_words = War[War["Word"].str.match(r'^' + r"$|^".join(tokens) + r'$')]
-        print(War_words)
         feats[23] = War_words.iloc[:, 2].mean()
         feats[24] = War_words.iloc[:, 5].mean()
         feats[25] = War_words.iloc[:, 8].mean()
@@ -118,7 +118,7 @@ def main(args):
     feats = np.zeros((len(data), 173+1))
 
     i = 0
-    for sent in data:
+    for sent in tqdm(data):
         feats[i, :29] = extract1(sent['body'])
         feats[i, :] = extract2(feats[i, :], sent['cat'], sent['id'])
         i += 1
