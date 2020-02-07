@@ -38,7 +38,7 @@ def extract1(comment):
         feats : numpy Array, a 173-length vector of floating point features (only the first 29 are expected to be filled, here)
     '''
 
-    feats = np.empty(173, dtype=float)
+    feats = np.empty(29, dtype=float)
     feats[0] = len(re.findall(r"\b[A-Z][A-Z][A-Z]+/", comment))
     for i in FIRST_PERSON_PRONOUNS:
         feats[1] += len(re.findall(r'\b' + i + '/', comment))
@@ -99,8 +99,13 @@ def main(args):
     data = json.load(open(args.input))
     feats = np.zeros((len(data), 173+1))
 
+    i = 0
+    for sent in data:
+        feats[i, :29] = extract1(sent)
+
     # TODO: Use extract1 to find the first 29 features for each 
     # data point. Add these to feats.
+
     # TODO: Use extract2 to copy LIWC features (features 30-173)
     # into feats. (Note that these rely on each data point's class,
     # which is why we can't add them in extract1).
