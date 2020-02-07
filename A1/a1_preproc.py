@@ -54,12 +54,10 @@ def main(args):
             print( "Processing " + fullFile)
 
             data = json.load(open(fullFile))
-            print(args.ID, args.max)
-            print(args.N)
-            if args.ID + args.max >= len(data):
-                data = data[args.ID:(len(data)-1)].extend(data[:(args.ID+args.max-len(data))])
+            if args.ID[0] + args.max >= len(data):
+                data = data[args.ID[0]:(len(data)-1)].extend(data[:(args.ID[0]+args.max-len(data))])
             else:
-                data = data[args.ID:(args.ID+args.max)]
+                data = data[args.ID[0]:(args.ID[0]+args.max)]
             data = [json.loads(line) for line in data]
             print(data)
 
