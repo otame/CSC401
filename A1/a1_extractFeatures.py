@@ -40,6 +40,7 @@ def extract1(comment):
 
     feats = np.empty(29, dtype=float)
     feats[0] = len(re.findall(r"\b[A-Z][A-Z][A-Z]+/", comment))
+    comment = comment.lower()
     for i in FIRST_PERSON_PRONOUNS:
         feats[1] += len(re.findall(r'\b' + i + '/', comment))
     for i in SECOND_PERSON_PRONOUNS:
@@ -59,7 +60,7 @@ def extract1(comment):
         feats[13] += len(re.findall(r'\b' + i + '/', comment))
     feats[14] = len(comment)
     tokens = re.findall(r'\b[A-Za-z]+/', comment)
-    tokens = [x[:-1].lower() for x in tokens]
+    tokens = [x[:-1] for x in tokens]
     feats[16] = len(re.findall(r'\n', comment))
     if len(tokens) != 0:
         feats[15] = len("".join(tokens))/len(tokens)
