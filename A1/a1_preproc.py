@@ -54,12 +54,14 @@ def main(args):
             print( "Processing " + fullFile)
 
             data = json.load(open(fullFile))
-            data = data[:1]
+            if args.ID + args.max >= len(data):
+                data = data[args.ID:(len(data)-1)].extend(data[:(args.ID+args.max-len(data))])
+            else:
+                data = data[args.ID:(args.ID+args.max)]
+            data = [json.loads(line) for line in data]
             print(data)
-            data = data[:args.max]
 
 
-            # TODO: select appropriate args.max lines
             # TODO: read those lines with something like `j = json.loads(line)`
             # TODO: choose to retain fields from those lines that are relevant to you
             # TODO: add a field to each selected line called 'cat' with the value of 'file' (e.g., 'Alt', 'Right', ...) 
