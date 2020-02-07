@@ -54,6 +54,8 @@ def main(args):
             print( "Processing " + fullFile)
 
             data = json.load(open(fullFile))
+            data = data[:args.max]
+            data = preproc1(data)
 
             # TODO: select appropriate args.max lines
             # TODO: read those lines with something like `j = json.loads(line)`
@@ -75,7 +77,7 @@ if __name__ == "__main__":
     parser.add_argument("-o", "--output", help="Directs the output to a filename of your choice", required=True)
     parser.add_argument("--max", type=int, help="The maximum number of comments to read from each file", default=10000)
     parser.add_argument("--a1_dir", help="The directory for A1. Should contain subdir data. Defaults to the directory for A1 on cdf.", default='/u/cs401/A1')
-    
+
     args = parser.parse_args()
 
     if (args.max > 200272):
