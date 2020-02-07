@@ -35,21 +35,16 @@ def preproc1(comment , steps=range(1, 5)):
     utt = nlp(modComm)
     total = ""
     for sent in utt.sents:
-        print(sent.text)
         new_sent = []
         for token in sent:
             if token.lemma_[0] != "-" or token.text[0] == "-":
-                new_sent.append(token.lemma_ + "/" + token.pos_)
+                new_sent.append(token.lemma_ + "/" + token.tag_)
             else:
-                new_sent.append(token.text + "/" + token.pos_)
-            print(token.text, token.lemma_, token.pos_, token.tag_, token.dep_,
-            token.shape_, token.is_alpha, token.is_stop)
+                new_sent.append(token.text + "/" + token.tag_)
         total += " ".join(new_sent) + '\n'
     modComm = total
 
-    
-    # TODO: use Spacy document for modComm to create a string.
-    # Make sure to:
+        # Make sure to:
     #    * Insert "\n" between sentences.
     #    * Split tokens with spaces.
     #    * Write "/POS" after each token.
@@ -73,19 +68,10 @@ def main(args):
                 data = data[start:(start+args.max)]
             for line in data:
                 j = json.loads(line)
-                j = {"body": j["body"], "cat": file}
+                j = {"id": j["id"], "body": j["body"], "cat": file}
                 j['body'] = preproc1(j['body'])
                 allOutput.append(j)
-    print(allOutput)
 
-
-
-
-            # TODO: choose to retain fields from those lines that are relevant to you
-            # TODO: add a field to each selected line called 'cat' with the value of 'file' (e.g., 'Alt', 'Right', ...) 
-            # TODO: process the body field (j['body']) with preproc1(...) using default for `steps` argument
-            # TODO: replace the 'body' field with the processed text
-            # TODO: append the result to 'allOutput'
             
     fout = open(args.output, 'w')
     fout.write(json.dumps(allOutput))
