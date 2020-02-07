@@ -60,13 +60,14 @@ def main(args):
                 data = data[start:(len(data))].extend(data[:(start+args.max-len(data))])
             else:
                 data = data[start:(start+args.max)]
-            pre = data
-            data = [json.loads(line) for line in data]
-            post = data
-            print(data, pre==post)
+            for line in data:
+                j = json.loads(line)
+                j = {"body": j["body"], "cat": file}
+                print(j)
 
 
-            # TODO: read those lines with something like `j = json.loads(line)`
+
+
             # TODO: choose to retain fields from those lines that are relevant to you
             # TODO: add a field to each selected line called 'cat' with the value of 'file' (e.g., 'Alt', 'Right', ...) 
             # TODO: process the body field (j['body']) with preproc1(...) using default for `steps` argument
