@@ -64,14 +64,14 @@ def extract1(comment):
     feats[14] = len(comment.split())/feats[16]
     if len(tokens) != 0:
         feats[15] = len("".join(tokens))/len(tokens)
-        BGL_words = BGL[BGL["WORD"].str.match(r'\b' + r"\b|\b".join(tokens) + r'\b')]
+        BGL_words = BGL[BGL["WORD"].str.match(r'^' + r"$|^".join(tokens) + r'$')]
         feats[17] = BGL_words.iloc[:, 3].mean()
         feats[18] = BGL_words.iloc[:, 4].mean()
         feats[19] = BGL_words.iloc[:, 5].mean()
         feats[20] = BGL_words.iloc[:, 3].std()
         feats[21] = BGL_words.iloc[:, 4].std()
         feats[22] = BGL_words.iloc[:, 5].std()
-        War_words = War[War["Word"].str.match(r'\b' + r"\b|\b".join(tokens) + r'\b')]
+        War_words = War[War["Word"].str.match(r'^' + r"$|^".join(tokens) + r'$')]
         print(War_words)
         feats[23] = War_words.iloc[:, 2].mean()
         feats[24] = War_words.iloc[:, 5].mean()
