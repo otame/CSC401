@@ -101,7 +101,7 @@ def main(args):
 
     i = 0
     for sent in data:
-        feats[i, :29] = extract1(sent)
+        feats[i, :29] = extract1(sent['body'])
 
     # TODO: Use extract1 to find the first 29 features for each 
     # data point. Add these to feats.
