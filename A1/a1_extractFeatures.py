@@ -24,7 +24,7 @@ BGL = BGL[["WORD", "AoA (100-700)", "IMG", "FAM"]]
 BGL.dropna(inplace=True, subset=["WORD"])
 BGL.fillna(0, inplace=True)
 # BGL = BGL.values
-War = pd.read_csv('u/cs401/Wordlists/Ratings_Warriner_et_al.csv')
+War = pd.read_csv('/u/cs401/Wordlists/Ratings_Warriner_et_al.csv')
 War = War[['Word', "V.Mean.Sum", 'A.Mean.Sum', 'D.Mean.Sum']]
 War.dropna(inplace=True, subset=["Word"])
 War.fillna(0, inplace=True)
