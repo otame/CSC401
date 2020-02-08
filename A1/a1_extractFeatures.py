@@ -20,15 +20,37 @@ SLANG = {
     'afn', 'bbs', 'cya', 'ez', 'f2f', 'gtr', 'ic', 'jk', 'k', 'ly', 'ya',
     'nm', 'np', 'plz', 'ru', 'so', 'tc', 'tmi', 'ym', 'ur', 'u', 'sol', 'fml'}
 
-BGL = pd.read_csv('/u/cs401/Wordlists/BristolNorms+GilhoolyLogie.csv')
+BGL = pd.read_csv('Wordlists/BristolNorms+GilhoolyLogie.csv')
 BGL = BGL[["WORD", "AoA (100-700)", "IMG", "FAM"]]
 BGL.dropna(inplace=True, subset=["WORD"])
 BGL.fillna(0, inplace=True)
 # BGL = BGL.values
-War = pd.read_csv('/u/cs401/Wordlists/Ratings_Warriner_et_al.csv')
+War = pd.read_csv('Wordlists/Ratings_Warriner_et_al.csv')
 War = War[['Word', "V.Mean.Sum", 'A.Mean.Sum', 'D.Mean.Sum']]
 War.dropna(inplace=True, subset=["Word"])
 War.fillna(0, inplace=True)
+
+left_f = open("/u/cs401/A1/feats/Left_IDs.txt")
+left_liwc = np.load("/u/cs401/A1/feats/Left_feats.dat.npy")
+right_f = open("/u/cs401/A1/feats/Right_IDs.txt")
+right_liwc = np.load("/u/cs401/A1/feats/Right_feats.dat.npy")
+center_f = open("/u/cs401/A1/feats/Center_IDs.txt")
+center_liwc = np.load("/u/cs401/A1/feats/Center_feats.dat.npy")
+alt_f = open("/u/cs401/A1/feats/Alt_IDs.txt")
+alt_liwc = np.load("/u/cs401/A1/feats/Alt_feats.dat.npy")
+
+
+left_ids = left_f.readlines()
+left_ids = [i.strip() for i in left_ids]
+
+right_ids = right_f.readlines()
+right_ids = [i.strip() for i in right_ids]
+
+center_ids = center_f.readlines()
+center_ids = [i.strip() for i in center_ids]
+
+alt_ids = alt_f.readlines()
+alt_ids = [i.strip() for i in alt_ids]
 
 def extract1(comment):
     ''' This function extracts features from a single comment
@@ -56,13 +78,12 @@ def extract1(comment):
     feats[11] = len(re.findall(r'/rb|/rbr|/rbs', comment))
     feats[12] = len(re.findall('/wdt|/wp|/wp\$|/wrb', comment))
     feats[13] = len(re.findall(r'\b' + r'/|\b'.join(SLANG) + '/', comment))
-    tokens = re.findall(r'\b*/', comment)
+    tokens = re.findall(r'\b[a-z]+/', comment)
     tokens = [x[:-1] for x in tokens]
     feats[16] = len(re.findall(r'\n', comment))
     feats[14] = len(tokens)/feats[16]
     if len(tokens) != 0:
-        alpha = re.findall(r'\b[a-z]+/', comment)
-        feats[15] = len("".join(alpha))/len(alpha) - 1
+        feats[15] = len("".join(tokens))/len(tokens)
         BGL_words = BGL[BGL["WORD"].str.match(r'^' + r"$|^".join(tokens) + r'$')]
         feats[17] = BGL_words["AoA (100-700)"].mean()
         feats[18] = BGL_words["IMG"].mean()
@@ -94,18 +115,17 @@ def extract2(feats, comment_class, comment_id):
         the parameter feats.
     '''
 
-    f = open("/u/cs401/A1/feats/" + comment_class + "_IDs.txt")
-    liwc = np.load("/u/cs401/A1/feats/" + comment_class + "_feats.dat.npy")
-    ids = f.readlines()
-    ids = [i.strip() for i in ids]
-    feats[29:173] = liwc[ids.index(comment_id)]
     if comment_class == "Left":
+        feats[29:173] = left_liwc[left_ids.index(comment_id)]
         feats[173] = 0
     elif comment_class == "Center":
+        feats[29:173] = center_liwc[center_ids.index(comment_id)]
         feats[173] = 1
     elif comment_class == "Right":
+        feats[29:173] = right_liwc[right_ids.index(comment_id)]
         feats[173] = 2
     elif comment_class == "Alt":
+        feats[29:173] = alt_liwc[alt_ids.index(comment_id)]
         feats[173] = 3
 
     return feats
