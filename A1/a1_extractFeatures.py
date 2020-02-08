@@ -56,12 +56,13 @@ def extract1(comment):
     feats[11] = len(re.findall(r'/rb|/rbr|/rbs', comment))
     feats[12] = len(re.findall('/wdt|/wp|/wp\$|/wrb', comment))
     feats[13] = len(re.findall(r'\b' + r'/|\b'.join(SLANG) + '/', comment))
-    tokens = re.findall(r'\b[a-z]+/', comment)
+    tokens = re.findall(r'\b*/', comment)
     tokens = [x[:-1] for x in tokens]
     feats[16] = len(re.findall(r'\n', comment))
     feats[14] = len(tokens)/feats[16]
     if len(tokens) != 0:
-        feats[15] = len("".join(tokens))/len(tokens)
+        alpha = re.findall(r'\b[a-z]+/', comment)
+        feats[15] = len("".join(alpha))/len(alpha) - 1
         BGL_words = BGL[BGL["WORD"].str.match(r'^' + r"$|^".join(tokens) + r'$')]
         feats[17] = BGL_words["AoA (100-700)"].mean()
         feats[18] = BGL_words["IMG"].mean()
