@@ -19,12 +19,12 @@ SLANG = {
     'ppl', 'sob', 'ttyl', 'imo', 'ltr', 'thx', 'kk', 'omg', 'omfg', 'ttys',
     'afn', 'bbs', 'cya', 'ez', 'f2f', 'gtr', 'ic', 'jk', 'k', 'ly', 'ya',
     'nm', 'np', 'plz', 'ru', 'so', 'tc', 'tmi', 'ym', 'ur', 'u', 'sol', 'fml'}
-BGL = pd.read_csv('/u/cs401/A1/Wordlists/BristolNorms+GilhoolyLogie.csv')
+BGL = pd.read_csv('/u/cs401/Wordlists/BristolNorms+GilhoolyLogie.csv')
 BGL = BGL[["WORD", "AoA (100-700)", "IMG", "FAM"]]
 BGL.dropna(inplace=True, subset=["WORD"])
 BGL.fillna(0, inplace=True)
 # BGL = BGL.values
-War = pd.read_csv('u/cs401/A1/Wordlists/Ratings_Warriner_et_al.csv')
+War = pd.read_csv('u/cs401/Wordlists/Ratings_Warriner_et_al.csv')
 War = War[['Word', "V.Mean.Sum", 'A.Mean.Sum', 'D.Mean.Sum']]
 War.dropna(inplace=True, subset=["Word"])
 War.fillna(0, inplace=True)
