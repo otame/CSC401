@@ -20,12 +20,12 @@ SLANG = {
     'afn', 'bbs', 'cya', 'ez', 'f2f', 'gtr', 'ic', 'jk', 'k', 'ly', 'ya',
     'nm', 'np', 'plz', 'ru', 'so', 'tc', 'tmi', 'ym', 'ur', 'u', 'sol', 'fml'}
 BGL = pd.read_csv('/u/cs401/Wordlists/BristolNorms+GilhoolyLogie.csv')
-BGL = BGL[["WORD", "AoA (100-700)", "IMG", "FAM"]]
+# BGL = BGL[["WORD", "AoA (100-700)", "IMG", "FAM"]]
 BGL.dropna(inplace=True, subset=["WORD"])
 BGL.fillna(0, inplace=True)
 # BGL = BGL.values
 War = pd.read_csv('/u/cs401/Wordlists/Ratings_Warriner_et_al.csv')
-War = War[['Word', "V.Mean.Sum", 'A.Mean.Sum', 'D.Mean.Sum']]
+# War = War[['Word', "V.Mean.Sum", 'A.Mean.Sum', 'D.Mean.Sum']]
 War.dropna(inplace=True, subset=["Word"])
 War.fillna(0, inplace=True)
 
@@ -84,19 +84,25 @@ def extract1(comment):
     if len(tokens) != 0:
         feats[15] = len("".join(tokens))/len(tokens)
         BGL_words = BGL[BGL["WORD"].str.match(r'^' + r"$|^".join(tokens) + r'$')]
-        feats[17] = BGL_words["AoA (100-700)"].mean()
-        feats[18] = BGL_words["IMG"].mean()
-        feats[19] = BGL_words["FAM"].mean()
-        feats[20] = BGL_words["AoA (100-700)"].std()
-        feats[21] = BGL_words["IMG"].std()
-        feats[22] = BGL_words["FAM"].std()
+        # feats[17] = BGL_words["AoA (100-700)"].mean()
+        # feats[18] = BGL_words["IMG"].mean()
+        # feats[19] = BGL_words["FAM"].mean()
+        # feats[20] = BGL_words["AoA (100-700)"].std()
+        # feats[21] = BGL_words["IMG"].std()
+        # feats[22] = BGL_words["FAM"].std()
+        feats[17] = BGL_words.iloc[:, 3].mean()
+        feats[18] = BGL_words.iloc[:, 4].mean()
+        feats[19] = BGL_words.iloc[:, 5].mean()
+        feats[20] = BGL_words.iloc[:, 3].std()
+        feats[21] = BGL_words.iloc[:, 4].std()
+        feats[22] = BGL_words.iloc[:, 5].std()
         War_words = War[War["Word"].str.match(r'^' + r"$|^".join(tokens) + r'$')]
-        feats[23] = War_words['V.Mean.Sum'].mean()
-        feats[24] = War_words['A.Mean.Sum'].mean()
-        feats[25] = War_words['D.Mean.Sum'].mean()
-        feats[26] = War_words['V.Mean.Sum'].std()
-        feats[27] = War_words['A.Mean.Sum'].std()
-        feats[28] = War_words['D.Mean.Sum'].std()
+        feats[23] = War_words.iloc[:, 2].mean()
+        feats[24] = War_words.iloc[:, 5].mean()
+        feats[25] = War_words.iloc[:, 8].mean()
+        feats[26] = War_words.iloc[:, 2].std()
+        feats[27] = War_words.iloc[:, 5].std()
+        feats[28] = War_words.iloc[:, 8].std()
     return feats
     
     
