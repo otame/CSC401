@@ -81,6 +81,7 @@ def extract1(comment):
     feats[14] = len(comment.split())/feats[16]
     alpha = re.findall(r'\b[a-z]+/', comment)
     alpha = [x[:-1] for x in alpha]
+    print(alpha)
     if len(alpha) != 0:
         feats[15] = len("".join(alpha))/len(alpha)
         BGL_words = BGL[BGL["WORD"].str.match(r'^' + r"$|^".join(alpha) + r'$')]
