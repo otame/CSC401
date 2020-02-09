@@ -83,7 +83,7 @@ def extract1(comment):
     alpha = [x[:-1] for x in alpha]
     if len(alpha) != 0:
         feats[15] = len("".join(alpha))/len(alpha)
-        BGL_words = BGL[BGL["WORD"].str.match(r'^' + r"$|^".join(tokens) + r'$')]
+        BGL_words = BGL[BGL["WORD"].str.match(r'^' + r"$|^".join(alpha) + r'$')]
         # feats[17] = BGL_words["AoA (100-700)"].mean()
         # feats[18] = BGL_words["IMG"].mean()
         # feats[19] = BGL_words["FAM"].mean()
@@ -96,7 +96,7 @@ def extract1(comment):
         feats[20] = BGL_words.iloc[:, 3].std()
         feats[21] = BGL_words.iloc[:, 4].std()
         feats[22] = BGL_words.iloc[:, 5].std()
-        War_words = War[War["Word"].str.match(r'^' + r"$|^".join(tokens) + r'$')]
+        War_words = War[War["Word"].str.match(r'^' + r"$|^".join(alpha) + r'$')]
         feats[23] = War_words.iloc[:, 2].mean()
         feats[24] = War_words.iloc[:, 5].mean()
         feats[25] = War_words.iloc[:, 8].mean()
