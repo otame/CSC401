@@ -84,7 +84,7 @@ def extract1(comment):
     if len(alpha) != 0:
         feats[15] = len("".join(alpha))/len(alpha)
         BGL_words = BGL[BGL["WORD"].str.match(r'^' + r"$|^".join(alpha) + r'$')]
-        print(BGL_words)
+        print(BGL_words["WORD", "AoA (100-700)", "IMG", "FAM"])
         # feats[17] = BGL_words["AoA (100-700)"].mean()
         # feats[18] = BGL_words["IMG"].mean()
         # feats[19] = BGL_words["FAM"].mean()
